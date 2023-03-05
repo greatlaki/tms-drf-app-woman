@@ -9,5 +9,9 @@ class Women(BaseModel):
     content = models.TextField(blank=True, null=True)
     is_published = models.BooleanField(default=True)
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, blank=True, null=True
+        Category,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="category",
     )
