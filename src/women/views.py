@@ -35,6 +35,19 @@ class WomenAPIView(APIView):
         serializer.save()
         return Response({"post": serializer.data})
 
+    def delete(self, request, *args, **kwargs):
+        pk = kwargs.get("pk", None)
+        if not pk:
+            return Response({"error": "Method DELETE not allowed"})
+
+        try:
+            instance = get_object_or_404(Women, pk=pk)
+            instance.delete()
+        except Women.DoesNotExist:
+            raise Http404("Given query not found....")
+
+        return Response({"post": "delete post " + str(pk)})
+
 
 class WomenListAPIView(generics.ListAPIView):
     queryset = Women.objects.all()

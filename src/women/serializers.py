@@ -9,6 +9,7 @@ from women.models import Women
 
 
 class WomenSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
     title = serializers.CharField(max_length=255)
     content = serializers.CharField()
     created_at = serializers.DateTimeField(read_only=True)
