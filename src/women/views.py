@@ -1,4 +1,5 @@
-from django.forms import model_to_dict
+from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -9,16 +10,30 @@ from women.serializers import WomenSerializer
 
 class WomenAPIView(APIView):
     def get(self, request):
-        lst = Women.objects.all().values()
-        return Response({"posts": list(lst)})
+        w = Women.objects.all()
+        return Response({"posts": WomenSerializer(w, many=True).data})
 
     def post(self, request):
-        post_new = Women.objects.create(
-            title=request.data["title"],
-            content=request.data["content"],
-            category_id=request.data["category_id"],
-        )
-        return Response({"post": model_to_dict(post_new)})
+        serializer = WomenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({"post": serializer.data})
+
+    def put(self, request, *args, **kwargs):
+        pk = kwargs.get("pk", None)
+        if not pk:
+            return Response({"error": "Method PUT not allowed"})
+
+        try:
+            instance = get_object_or_404(Women, pk=pk)
+        except Women.DoesNotExist:
+            raise Http404("Given query not found....")
+
+        serializer = WomenSerializer(data=request.data, instance=instance)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"post": serializer.data})
 
 
 class WomenListAPIView(generics.ListAPIView):
