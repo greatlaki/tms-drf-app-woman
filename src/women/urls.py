@@ -1,7 +1,11 @@
 from django.urls import path
-from women.views import WomenListAPIView
 
+from women.views import WomenAPIView, WomenListAPIView
 
 urlpatterns = [
-    path("", WomenListAPIView.as_view(), )
+    path("apiview/", WomenAPIView.as_view(), name="base-view-class"),
+    path(
+        "",
+        WomenListAPIView.as_view(),
+    ),
 ]
