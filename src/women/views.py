@@ -10,6 +10,9 @@ class WomenAPIView(APIView):
     def get(self, request):
         return Response({"title": "Angelina Jolie"})
 
+    def post(self, request):
+        return Response({"title": "Jennifer Lawrence"})
+
 
 class WomenListAPIView(generics.ListAPIView):
     queryset = Women.objects.all()
