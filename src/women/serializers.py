@@ -8,28 +8,34 @@ from women.models import Women
 #         self.content = content
 
 
-class WomenSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    title = serializers.CharField(max_length=255)
-    content = serializers.CharField()
-    created_at = serializers.DateTimeField(read_only=True)
-    updated_at = serializers.DateTimeField(read_only=True)
-    is_published = serializers.BooleanField(default=True)
-    category_id = serializers.IntegerField()
+# class WomenSerializer(serializers.Serializer):
+#     id = serializers.IntegerField()
+#     title = serializers.CharField(max_length=255)
+#     content = serializers.CharField()
+#     created_at = serializers.DateTimeField(read_only=True)
+#     updated_at = serializers.DateTimeField(read_only=True)
+#     is_published = serializers.BooleanField(default=True)
+#     category_id = serializers.IntegerField()
+#
+#     def create(self, validated_data):
+#         return Women.objects.create(**validated_data)
+#
+#     def update(self, instance, validated_data):
+#         instance.title = validated_data.get("title", instance.title)
+#         instance.content = validated_data.get("content", instance.content)
+#         instance.updated_at = validated_data.get("updated_at", instance.updated_at)
+#         instance.is_published = validated_data.get(
+#             "is_published", instance.is_published
+#         )
+#         instance.category_id = validated_data.get("category_id", instance.category_id)
+#         instance.save()
+#         return instance
 
-    def create(self, validated_data):
-        return Women.objects.create(**validated_data)
 
-    def update(self, instance, validated_data):
-        instance.title = validated_data.get("title", instance.title)
-        instance.content = validated_data.get("content", instance.content)
-        instance.updated_at = validated_data.get("updated_at", instance.updated_at)
-        instance.is_published = validated_data.get(
-            "is_published", instance.is_published
-        )
-        instance.category_id = validated_data.get("category_id", instance.category_id)
-        instance.save()
-        return instance
+class WomenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Women
+        fields = ("id", "title", "content", "category")
 
 
 # def encode():
