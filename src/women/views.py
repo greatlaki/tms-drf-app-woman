@@ -1,6 +1,8 @@
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from women.models import Women
+from women.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from women.serializers import WomenSerializer
 
 # class WomenAPIView(APIView):
@@ -44,11 +46,19 @@ from women.serializers import WomenSerializer
 #         return Response({"post": "delete post " + str(pk)})
 
 
-class WomenListAPIView(generics.ListAPIView):
+class WomenListCreateAPIView(generics.ListCreateAPIView):
     queryset = Women.objects.all()
     serializer_class = WomenSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 class WomenUpdateAPIView(generics.UpdateAPIView):
     queryset = Women.objects.all()
     serializer_class = WomenSerializer
+    permission_classes = (IsOwnerOrReadOnly,)
+
+
+class WomenDestroyAPIView(generics.DestroyAPIView):
+    queryset = Women.objects.all()
+    serializer_class = WomenSerializer
+    permission_classes = (IsAdminOrReadOnly,)
